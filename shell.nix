@@ -36,9 +36,12 @@ pkgs.ccacheStdenv.mkDerivation {
       python310Packages.werkzeug
       python310Packages.termcolor
 
-      perl
+      perl  # iverilog uses perl to create its config.h
 
       zlib  # PIP introduces impurities and downloads code that needs zlib.
+
+      # Development support
+      bazel-buildtools  # buildifier
     ];
    shellHook =
    ''

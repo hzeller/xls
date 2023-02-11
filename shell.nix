@@ -3,13 +3,14 @@
 # in this repo, and have all dependencies ready in the new shell.
 
 { pkgs ? import <nixpkgs> {} }:
-pkgs.mkShell {
+pkgs.ccacheStdenv.mkDerivation {
+  name = "ccache-enabled";
   buildInputs = with pkgs;
     [
-      git
+      git cacert
       bazel_5
       # For bazel to use the correct python,
-      # use --repo_env PYTHON_BIN_PATH=`which python3` (see README)
+      # use --repo_env PYTHON_BIN_PATH=`command -v python3` (see README)
       python310 
       jdk11
 
@@ -27,13 +28,20 @@ pkgs.mkShell {
       python310Packages.psutil
       python310Packages.pyyaml
       python310Packages.werkzeug
+      python310Packages.termcolor
 
-      zlib  # Used by some external Python module ?
+      perl
 
-      ncurses
+      zlib  # PIP introduces impurities and downloads code that needs zlib.
     ];
    shellHook =
    ''
-       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${pkgs.zlib}/lib:${pkgs.stdenv.cc.cc.lib}/lib
+       # Due to the use of pip, some binary code is downloaded from the
+       # internet, introducing a non-hermetic build.
+       # The downloaded code contains binary platform libraries that
+       # assume they can link against local shared libraries. Allow this
+       # here for now, but this needs to be addressed.
+       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${pkgs.zlib}/lib
+       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${pkgs.stdenv.cc.cc.lib}/lib
    '';
 }

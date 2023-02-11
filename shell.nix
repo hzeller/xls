@@ -2,6 +2,12 @@
 # If you have nix installed, you may simply run `nix-shell`
 # in this repo, and have all dependencies ready in the new shell.
 
+# Use ccache stddev, so that a bazel clean makes it much
+# cheaper to rebuild the world.
+# However, this requires that you add the following line
+# to your ~/.bazelrc
+# common --sanbdox_writeable_path=/your/home/directory/.cache/ccache
+
 { pkgs ? import <nixpkgs> {} }:
 pkgs.ccacheStdenv.mkDerivation {
   name = "ccache-enabled";

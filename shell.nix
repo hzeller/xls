@@ -11,7 +11,7 @@ pkgs.ccacheStdenv.mkDerivation {
       bazel_5
       # For bazel to use the correct python,
       # use --repo_env PYTHON_BIN_PATH=`command -v python3` (see README)
-      python310 
+      python310
       jdk11
 
       # Python packages needed found with

@@ -18,8 +18,8 @@ pkgs.ccacheStdenv.mkDerivation {
       jdk11
       git cacert
 
-      # For bazel to use the correct python,
-      # use --repo_env PYTHON_BIN_PATH=`command -v python3` (see README)
+      # For bazel to use the correct python (see README), use
+      # bazel --repo_env PYTHON_BIN_PATH=`command -v python3`
       python310
 
       # Python packages needed found with

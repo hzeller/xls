@@ -6,7 +6,7 @@
 # cheaper to rebuild the world.
 #
 # However, this requires that you add a line to your ~/.bazelrc
-# echo "build --sandbox_writable_path=$HOME/.cache/ccache/" >> ~/.bazelrc
+# echo "build --sandbox_writable_path=$HOME/.cache/ccache" >> ~/.bazelrc
 
 { pkgs ? import <nixpkgs> {} }:
 pkgs.ccacheStdenv.mkDerivation {

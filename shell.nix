@@ -5,9 +5,8 @@
 # Use ccache stddev, so that a bazel clean makes it much
 # cheaper to rebuild the world.
 #
-# However, this requires that you add the following line
-# to your ~/.bazelrc
-# build --sanbdox_writeable_path=/your/home/directory/.cache/ccache
+# However, this requires that you add a line to your ~/.bazelrc
+# echo "build --sandbox_writable_path=$HOME/.cache/ccache/" >> ~/.bazelrc
 
 { pkgs ? import <nixpkgs> {} }:
 pkgs.ccacheStdenv.mkDerivation {

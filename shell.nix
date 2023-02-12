@@ -16,7 +16,7 @@ pkgs.ccacheStdenv.mkDerivation {
     [
       bazel_5
       jdk11
-      git cacert
+      git cacert    # some recursive workspace dependencies via git.
 
       # For bazel to use the correct python (see README), use
       # bazel --repo_env PYTHON_BIN_PATH=`command -v python3`

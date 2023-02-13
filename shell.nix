@@ -2,15 +2,24 @@
 # If you have nix installed, you may simply run `nix-shell`
 # in this repo, and have all dependencies ready in the new shell.
 
-# Use ccache stddev, so that a bazel clean makes it much
-# cheaper to rebuild the world.
-#
-# However, this requires that you add a line to your ~/.bazelrc
-# echo "build --sandbox_writable_path=$HOME/.cache/ccache" >> ~/.bazelrc
 
 { pkgs ? import <nixpkgs> {} }:
-pkgs.ccacheStdenv.mkDerivation {
-  name = "ccache-enabled";
+let
+  xls_used_stdenv = pkgs.stdenv;
+
+  # Alternatively, use ccache stddev, so after bazel clean
+  # it is much cheaper to rebuild the world.
+  #
+  # This requires that you add a line to your ~/.bazelrc
+  # echo "build --sandbox_writable_path=$HOME/.cache/ccache" >> ~/.bazelrc
+  #xls_used_stdenv = pkgs.ccacheStdenv;
+
+  # This does not work yet out of the box
+  # https://github.com/NixOS/nixpkgs/issues/216047
+  #xls_used_stdenv = pkgs.clang13Stdenv;
+in
+xls_used_stdenv.mkDerivation {
+  name = "xls-build-environment";
   buildInputs = with pkgs;
     [
       bazel_5
@@ -39,9 +48,10 @@ pkgs.ccacheStdenv.mkDerivation {
       python310Packages.termcolor
       python310Packages.werkzeug
 
-      perl  # iverilog uses perl to create its config.h
-
-      zlib  # PIP introduces impurities and downloads code that needs zlib.
+      # Other dependencies needed in the build process.
+      perl    # iverilog uses perl to create its config.h
+      ncurses # provides tic
+      zlib    # PIP introduces impurities and downloads code that needs zlib.
 
       # Development support
       bazel-buildtools  # buildifier

@@ -14,36 +14,6 @@
 
 workspace(name = "com_google_xls")
 
-# Load and configure a hermetic LLVM based C/C++ toolchain. This is done here
-# and not in load_external.bzl because it requires several sequential steps of
-# declaring archives and using things in them, which is awkward to do in .bzl
-# files because it's not allowed to use `load` inside of a function.
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-http_archive(
-    name = "com_grail_bazel_toolchain",
-    sha256 = "dd03374af7885d255eb735b9065a32463a1154d9de6eb47261a49c8acc1cd497",
-    strip_prefix = "bazel-toolchain-0.6.3",
-    urls = [
-        "https://github.com/grailbio/bazel-toolchain/archive/0.6.3.zip",
-    ],
-)
-
-load("@com_grail_bazel_toolchain//toolchain:deps.bzl", "bazel_toolchain_dependencies")
-
-bazel_toolchain_dependencies()
-
-load("@com_grail_bazel_toolchain//toolchain:rules.bzl", "llvm_toolchain")
-
-llvm_toolchain(
-    name = "llvm_toolchain",
-    llvm_version = "13.0.0",
-)
-
-load("@llvm_toolchain//:toolchains.bzl", "llvm_register_toolchains")
-
-llvm_register_toolchains()
-
 load("//dependency_support:load_external.bzl", "load_external_repositories")
 
 load_external_repositories()

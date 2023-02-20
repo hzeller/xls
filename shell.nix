@@ -1,7 +1,7 @@
 # This is a nix-shell for use with the nix package manager.
 # If you have nix installed, you may simply run `nix-shell`
 # in this repo, and have all dependencies ready in the new shell.
-
+# This is not officially supported by XLS team.
 
 { pkgs ? import <nixpkgs> {} }:
 let
@@ -27,8 +27,6 @@ xls_used_stdenv.mkDerivation {
       jdk11
       git cacert    # some recursive workspace dependencies via git.
 
-      # For bazel to use the correct python (see README), use
-      # bazel --repo_env PYTHON_BIN_PATH=`command -v python3`
       python310
 
       # Python packages needed found with
@@ -56,6 +54,7 @@ xls_used_stdenv.mkDerivation {
 
       # Development support
       bazel-buildtools  # buildifier
+      clang-tools_14    # clang-format
     ];
 
    shellHook =

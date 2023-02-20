@@ -12,6 +12,7 @@ let
   #
   # This requires that you add a line to your ~/.bazelrc
   # echo "build --sandbox_writable_path=$HOME/.cache/ccache" >> ~/.bazelrc
+  # Works on nixos, but noticed issues with just nix package manager.
   #xls_used_stdenv = pkgs.ccacheStdenv;
 
   # This does not work yet out of the box

@@ -5,7 +5,7 @@
 
 { pkgs ? import <nixpkgs> {} }:
 let
-  xls_used_stdenv = pkgs.stdenv;
+  #xls_used_stdenv = pkgs.stdenv;
 
   # Alternatively, use ccache stddev, so after bazel clean
   # it is much cheaper to rebuild the world.
@@ -13,7 +13,7 @@ let
   # This requires that you add a line to your ~/.bazelrc
   # echo "build --sandbox_writable_path=$HOME/.cache/ccache" >> ~/.bazelrc
   # Works on nixos, but noticed issues with just nix package manager.
-  #xls_used_stdenv = pkgs.ccacheStdenv;
+  xls_used_stdenv = pkgs.ccacheStdenv;
 
   # This does not work yet out of the box
   # https://github.com/NixOS/nixpkgs/issues/216047

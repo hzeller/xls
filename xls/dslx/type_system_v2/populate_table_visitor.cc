@@ -1372,11 +1372,12 @@ class PopulateInferenceTableVisitor : public PopulateTableVisitor,
         table_.SetTypeVariable(node->lhs(), tuple_type_variable));
 
     // The index itself must be u32.
+    Expr *const expression = node->index();
     XLS_ASSIGN_OR_RETURN(
         const NameRef* index_type_variable,
         table_.DefineInternalVariable(
             InferenceVariableKind::kType, const_cast<Number*>(node->index()),
-            GenerateInternalTypeVariableName<Expr>(node->index())));
+            GenerateInternalTypeVariableName(expression)));
     XLS_RETURN_IF_ERROR(
         table_.SetTypeVariable(node->index(), index_type_variable));
     const TypeAnnotation* u32 =
@@ -1978,38 +1979,32 @@ class PopulateInferenceTableVisitor : public PopulateTableVisitor,
                             node->span().ToString(file_table_), module_.name());
   }
   // Specialization for `Expr` nodes, which do not have an identifier.
-  template <>
   std::string GenerateInternalTypeVariableName(const Expr* node) {
     return absl::Substitute("internal_type_expr_at_$0_in_$1",
                             node->span().ToString(file_table_), module_.name());
   }
   // Specialization for `Quickcheck` nodes, which do not have an identifier.
-  template <>
   std::string GenerateInternalTypeVariableName(const QuickCheck* node) {
     return absl::Substitute("internal_type_quickcheck_at_$0_in_$1",
                             node->span().ToString(file_table_), module_.name());
   }
 
   // Specialization for `Let` nodes, which do not have an identifier.
-  template <>
   std::string GenerateInternalTypeVariableName(const Let* node) {
     return absl::Substitute("internal_type_let_at_$0_in_$1",
                             node->span().ToString(file_table_), module_.name());
   }
   // Specialization for `Array` nodes.
-  template <>
   std::string GenerateInternalTypeVariableName(const Array* node) {
     return absl::Substitute("internal_type_array_element_at_$0_in_$1",
                             node->span().ToString(file_table_), module_.name());
   }
   // Specialization for `Range` nodes.
-  template <>
   std::string GenerateInternalTypeVariableName(const Range* node) {
     return absl::StrCat("internal_type_range_element_at_",
                         node->span().ToString(file_table_));
   }
   // Specialization for `Slice` nodes.
-  template <>
   std::string GenerateInternalTypeVariableName(const Slice* node) {
     return absl::StrCat("internal_type_slice_bound_at_",
                         node->GetSpan()->ToString(file_table_));

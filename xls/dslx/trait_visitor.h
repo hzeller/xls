@@ -37,8 +37,7 @@ class TraitVisitor : public ExprVisitorWithDefault {
     return absl::OkStatus();
   }
 
-  template <>
-  absl::Status Handle<NameRef>(const NameRef* expr) {
+  absl::Status Handle(const NameRef* expr) {
     name_refs_.push_back(expr);
     return absl::OkStatus();
   }

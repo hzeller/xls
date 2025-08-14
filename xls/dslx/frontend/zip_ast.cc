@@ -75,7 +75,6 @@ class ZipVisitor : public AstNodeVisitorWithDefault {
     return true;
   }
 
-  template <>
   bool MatchContent(const NameRef* lhs, const NameRef* rhs) {
     if (!options_.check_defs_for_name_refs) {
       return true;
